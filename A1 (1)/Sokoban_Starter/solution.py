@@ -49,7 +49,7 @@ def fval_function(sN, weight):
     @param float weight: Weight given by Anytime Weighted A star
     @rtype: float
     """
-    return 0 #CHANGE THIS
+    return 1 #CHANGE THIS
 
 # SEARCH ALGORITHMS
 def weighted_astar(initial_state, heur_fn, weight, timebound):
