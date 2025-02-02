@@ -51,7 +51,6 @@ def heur_manhattan_distance(state):
     return total_distance
 
 def fval_function(sN, weight):
-    # IMPLEMENT
     """
     Provide a custom formula for f-value computation for Anytime Weighted A star.
     Returns the fval of the state contained in the sNode.
@@ -60,7 +59,8 @@ def fval_function(sN, weight):
     @param float weight: Weight given by Anytime Weighted A star
     @rtype: float
     """
-    return 0 #CHANGE THIS
+    node=sNode(sN)
+    return node.gval+(weight * node.hval)
 
 # SEARCH ALGORITHMS
 def weighted_astar(initial_state, heur_fn, weight, timebound):
@@ -69,7 +69,8 @@ def weighted_astar(initial_state, heur_fn, weight, timebound):
     '''INPUT: a sokoban state that represents the start state and a timebound (number of seconds)'''
     '''OUTPUT: A goal state (if a goal is found), else False as well as a SearchStats object'''
     '''implementation of weighted astar algorithm'''
-    return None, None  # CHANGE THIS
+
+    return None,None
 
 def iterative_astar(initial_state, heur_fn, weight=1, timebound=5):  # uses f(n), see how autograder initializes a search line 88
     # IMPLEMENT
