@@ -27,7 +27,6 @@ def heur_zero(state):
     return 0
 
 def heur_manhattan_distance(state):
-    # IMPLEMENT
     '''admissible sokoban puzzle heuristic: manhattan distance'''
     '''INPUT: a sokoban state'''
     '''OUTPUT: a numeric value that serves as an estimate of the distance of the state to the goal.'''
@@ -37,7 +36,19 @@ def heur_manhattan_distance(state):
     # When calculating distances, assume there are no obstacles on the grid.
     # You should implement this heuristic function exactly, even if it is tempting to improve it.
     # Your function should return a numeric value; this is the estimate of the distance to the goal.
-    return 0  # CHANGE THIS
+    curr = SokobanState(state)
+    boxes = curr.boxes
+    storage = curr.storage
+    total_distance = 0
+
+    # Iterate through each box and find the Manhattan distance to the closest storage point
+    for box in boxes:
+        min_distance = min(
+            abs(box[0] - goal[0]) + abs(box[1] - goal[1])  # Manhattan distance
+            for goal in storage
+        )
+        total_distance += min_distance
+    return total_distance
 
 def fval_function(sN, weight):
     # IMPLEMENT
