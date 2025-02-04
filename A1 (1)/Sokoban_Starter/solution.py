@@ -21,8 +21,18 @@ def heur_alternate(state):
     # Write a heuristic function that improves upon heur_manhattan_distance to estimate distance between the current state and the goal.
     # Your function should return a numeric value for the estimate of the distance to the goal.
     # EXPLAIN YOUR HEURISTIC IN THE COMMENTS. Please leave this function (and your explanation) at the top of your solution file, to facilitate marking.
-    """Alternate heuristic using a two-layer Hungarian assignment."""
-    """Alternate heuristic using a two-layer Hungarian assignment without external imports."""
+    """My heuristic estimates the cost to reach the goal by combining  Manhattan distance, 
+    Hungarian Algorithm, and deadlock detection. It constructs cost matrices using Manhattan 
+    distance for robot-to-box and box-to-goal assignments, then applies the Hungarian Algorithm 
+    to find the optimal pairings that minimize cost. A deadlock detection function 
+    identifies boxes stuck in corners without a path to a goal and applies a high penalty (999) 
+    to avoid exploring bad states. I used the paper AI in Game Playing Sokoban Solver by Anand Venkatesan
+    ,Atishay Jain and Rakesh Grewal that explored various heuristics used in the game of sokoban and 
+    concluded that given a smaller dimension of level , A* with a hungarian distance metric computed 
+    by Manhattan distance found to have better performance than the other algorithm they considered in their
+    paper, a difference between the version of sokoban their paper focused on and the one used in this assessment 
+    was the # of robots present in each game.
+     """
     robots = list(state.robots)
     boxes = list(state.boxes)
     goals = list(state.storage)
@@ -47,7 +57,7 @@ def heur_alternate(state):
             return box not in goals
         return False
 
-    # Hungarian algorithm for optimal assignment
+    # Hungarian algorithm
     def hungarian_algorithm(cost_matrix):
         n = len(cost_matrix)
         min_cost = float('inf')
@@ -69,7 +79,7 @@ def heur_alternate(state):
         permute(list(range(n)), 0, n - 1)
         return best_assignment
 
-    # First assignment: Robots to boxes
+    # assignment of Robots to boxes
     size = max(len(robots), len(boxes))
     robot_box_cost = [[INF] * size for _ in range(size)]
     for i in range(len(robots)):
@@ -79,7 +89,7 @@ def heur_alternate(state):
     robot_box_assignment = hungarian_algorithm(robot_box_cost)
     robot_box_cost_total = sum(robot_box_cost[i][j] for i, j in robot_box_assignment if i < len(robots) and j < len(boxes))
 
-    # Second assignment: Boxes to goals
+    #assignment of Boxes to goals
     size = max(len(boxes), len(goals))
     box_goal_cost = [[INF] * size for _ in range(size)]
     for i in range(len(boxes)):
@@ -117,7 +127,6 @@ def heur_manhattan_distance(state):
     storage = state.storage
     total_distance = 0
 
-    # Iterate through each box and find the Manhattan distance to the closest storage point
     for box in boxes:
         min_distance = min(
             abs(box[0] - goal[0]) + abs(box[1] - goal[1])  # Manhattan distance
@@ -151,7 +160,7 @@ def weighted_astar(initial_state, heur_fn, weight, timebound):
 
 
 def iterative_astar(initial_state, heur_fn, weight=1,
-                    timebound=5):  # uses f(n), see how autograder initializes a search line 88
+                    timebound=5):
     '''Provides an implementation of realtime a-star, as described in the HW1 handout'''
     '''INPUT: a sokoban state that represents the start state and a timebound (number of seconds)'''
     '''OUTPUT: A goal state (if a goal is found), else False as well as a SearchStats object'''
@@ -159,7 +168,7 @@ def iterative_astar(initial_state, heur_fn, weight=1,
     best_solution = None
     best_stats = None
     remaining_time = timebound
-    weight_step = 0.5  # Decrease weight in steps
+    step = 0.5
     best_cost = float('inf')
 
     while weight >= 1 and remaining_time > 0:
@@ -169,9 +178,9 @@ def iterative_astar(initial_state, heur_fn, weight=1,
 
         if solution:
             best_solution, best_stats = solution, stats
-            best_cost = solution.gval  # Update cost bound with new best solution
+            best_cost = solution.gval
 
-        weight -= weight_step  # Reduce weight for next iteration
+        weight -= step
         remaining_time -= stats.total_time if stats else 0
 
     return best_solution, best_stats
