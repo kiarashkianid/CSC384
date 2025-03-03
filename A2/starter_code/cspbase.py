@@ -40,7 +40,7 @@ class Variable:
 
     '''Class for defining CSP variables.  On initialization the
        variable object should be given a name, and optionally a list of
-       domain values. Later on more domain values an be added...but
+       domain values. Later on more domain values can be added...but
        domain values can never be removed.
 
        The variable object offers two types of functionality to support
