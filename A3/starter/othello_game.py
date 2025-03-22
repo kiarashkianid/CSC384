@@ -42,7 +42,7 @@ class AiPlayerInterface(Player):
         if ordering == True: o = 1
 
         self.color = color
-        self.process = subprocess.Popen(['python3',filename], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        self.process = subprocess.Popen(['python',filename], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
         name = self.process.stdout.readline().decode("ASCII").strip()
         print("AI introduced itself as: {}".format(name))
         self.name = name

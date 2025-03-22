@@ -396,3 +396,4 @@ def minimax_max_node_2_test(minimax_max_node, name=""):
     max_score = 2 * len(answers)
     return score, details, max_score
 
+

@@ -130,7 +130,6 @@ def main():
 
         # Print the test result in the desired format.
         print(f"{status} {test_name} => score: {s}/{ms} details: {detail_to_print}")
-
     print("Overall Test Score: %d/%d" % (overall_score, overall_max))
 
 
